@@ -1,16 +1,15 @@
 <?php
-
 include_once("config.php");
- 
 if(isset($_POST['update']))
 {    
     $id = $_POST['id'];
     
     $name=$_POST['name'];
     $age=$_POST['age'];
+    $address=$_POST['address'];
     $email=$_POST['email'];    
     
-   
+
     if(empty($name) || empty($age) || empty($email)) {            
         if(empty($name)) {
             echo "<font color='red'>Name field is empty.</font><br/>";
@@ -19,15 +18,18 @@ if(isset($_POST['update']))
         if(empty($age)) {
             echo "<font color='red'>Age field is empty.</font><br/>";
         }
+          if(empty($address)) {
+            echo "<font color='red'>Address field is empty.</font><br/>";
+        }  
         
         if(empty($email)) {
             echo "<font color='red'>Email field is empty.</font><br/>";
         }        
     } else {    
+    
+        $result = mysqli_query($mysqli, "UPDATE users SET name='$name',age='$age',address='$address',email='$email' WHERE id=$id");
         
-        $result = mysqli_query($mysqli, "UPDATE users SET name='$name',age='$age',email='$email' WHERE id=$id");
-              
-        header("Location: index.php");
+          header("Location: index.php");
     }
 }
 ?>
@@ -35,13 +37,13 @@ if(isset($_POST['update']))
 
 $id = $_GET['id'];
  
-
 $result = mysqli_query($mysqli, "SELECT * FROM users WHERE id=$id");
  
 while($res = mysqli_fetch_array($result))
 {
     $name = $res['name'];
     $age = $res['age'];
+    $address = $res['address'];
     $email = $res['email'];
 }
 ?>
@@ -63,6 +65,10 @@ while($res = mysqli_fetch_array($result))
             <tr> 
                 <td>Age</td>
                 <td><input type="text" name="age" value="<?php echo $age;?>"></td>
+            </tr>
+            <tr> 
+                <td>Address</td>
+                <td><input type="text" name="address" value="<?php echo $address;?>"></td>
             </tr>
             <tr> 
                 <td>Email</td>
